@@ -1,5 +1,48 @@
 #!/bin/sh
 
+__is_in() {
+  #
+  # Checks whether or not ${1} is in the comma separated list of strings of ${2}.
+  #
+  # If the loop is broken, a match was found and the function returns 0; if
+  # exhausted, the function returns 1.
+  #
+
+  __is_in_target="${1}"
+  __is_in_list="${2}"
+  __is_in_elem=""
+  while [ -n "${__is_in_list}" ]; do
+    #
+    # The string deletions below are as follows:
+    #
+    # The first one deletes all but the first element of the passed list.
+    #
+    # The second one, the first element.
+    #
+    # The third, the comma after the first element. This deletion is done
+    # separately, because of the last element: when it's reached, it contains no
+    # ',' after itself, so adding a ',' to the pattern would cause it to not be
+    # deleted and the loop to never finish. By separating the deletion of the
+    # ',', the last item can be deleted.
+    #
+    __is_in_elem="${__is_in_list%%,*}"
+    __is_in_list="${__is_in_list#"${__is_in_elem}"}"
+    __is_in_list="${__is_in_list#,}"
+
+    #
+    # Comparison with The Target
+    #
+    # Even though "${__is_in_elem}" may contain trailing spaces and a ':'
+    # appended to the option, no more string deletion is needed: by inverting
+    # what would be intuitive comparison --- target against the element ---,
+    # the desired result is achieved.
+    #
+    case "${__is_in_elem}" in *"${__is_in_target}"*) return 0;; esac
+  done
+
+  return 1
+}
+
 gepsh() {
   #
   # This function takes three arguments:
@@ -40,6 +83,7 @@ gepsh() {
   # Iterate over every argument in "${@}"
   #
   while [ "${#}" -gt 0 ]; do
+    opt=""
     case "${1}" in
       #
       # Long Options
@@ -48,7 +92,16 @@ gepsh() {
       # is done against options with the double dashes and a single char too.
       # Because of this, they can be invalidated.
       #
-      --?*);;
+      --?*)
+        #
+        # Firstly, the double dashes are removed, since only the option name is
+        # compared to check its validity; secondly, the argument preceded by a
+        # '=' is removed: realize that, when the option is not passed in the
+        # "key=value" format, such string deletion will do nothing.
+        #
+        opt="${1#--}"
+        opt="${opt%%=*}"
+        ;;
       #
       # Short Options
       #

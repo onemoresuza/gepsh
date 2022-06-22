@@ -31,6 +31,25 @@ gepsh() {
   # the first positional argument reached will make all of those after it to be
   # treated like positional arguments.
   #
+  gepsh_progname="gepsh"
+  sopts="${1}"
+  lopts="${2}"
+  shift 2
 
-  true
+  #
+  # Iterate over every argument in "${@}"
+  #
+  while [ "${#}" -gt 0 ]; do
+    case "${1}" in
+      #
+      # Long Options
+      #
+      --*);;
+      #
+      # Short Options
+      #
+      -[!-]*);;
+    esac
+    shift
+  done
 }

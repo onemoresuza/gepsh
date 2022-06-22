@@ -44,9 +44,20 @@ gepsh() {
       #
       # Long Options
       #
-      --*);;
+      # Even though these options must be at least two character long, the check
+      # is done against options with the double dashes and a single char too.
+      # Because of this, they can be invalidated.
+      #
+      --?*);;
       #
       # Short Options
+      #
+      # To avoid that the special positional argument ("--") is caught here, the
+      # [!-] is used after the first dash; with this the former may be excluded.
+      # Moreover, a '*' is used instead of a '?' for this case to be able to
+      # caught short options with either arguments --- e. g., "-aArgOfA" ---,
+      # options --- e. g., "-abc" --- or both --- e. g., "-abcArgOfC" ---
+      # conjoined to itself.
       #
       -[!-]*);;
     esac

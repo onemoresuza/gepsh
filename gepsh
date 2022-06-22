@@ -1,0 +1,31 @@
+#!/bin/sh
+
+gepsh() {
+  #
+  # This function takes three arguments:
+  #
+  # gepsh "sopts" "lopts" "arguments"
+  #
+  # The first one is a comma separated list of one character strings that may
+  # or not contain a ':' at the end --- e. g., "a,b:,c:", ---, which indicates
+  # that the option takes an argument.
+  #
+  # The second one is also a comma separated list of strings with the
+  # same idiosyncrasies, however, they must be more than one character of
+  # length, for example, "a-long,b-long:,c-long:".
+  #
+  # Realize that for an option to be correctly parsed, both options must
+  # indicate if it takes or not an argument. Moreover, spaces among them are
+  # ignored, hence, "a-long, b-long: , c-long:" and "a,  b:   , c:" are all
+  # valid.
+  #
+  # The last argument are the arguments to be parsed.
+  #
+  # Do note that that this implementation of an argument parser follows the
+  # behavior of GNU Getopt with the `POSIXLY_CORRECT` environment variable set:
+  # the first positional argument reached will make all of those after it to be
+  # treated like positional arguments.
+  #
+
+  true
+}

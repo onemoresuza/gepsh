@@ -37,10 +37,11 @@ __get_argtype_err_on_matching() {
   #
   # Error message when there's no match.
   #
+  nomatch="${__GET_ARGTYPE_NO_MATCH}"
   rperr "${C_TITLE}%s (Matching):${C_NORMAL} " "${__GET_ARGTYPE_TESTNAME}"
   TESTNAME="__HIDE__" rperr "${C_FAIL}FAILED${C_NORMAL}.\n"
-  rperr "\"${C_TARGET}%s${C_NORMAL}\" was supposed to be found among " \
-    "${__GET_ARGTYPE_TARGET}"
+  rperr "\"${C_TARGET}%s${C_NORMAL}\" was %ssupposed to be found among " \
+    "${__GET_ARGTYPE_TARGET}" "${nomatch:+"${nomatch} "}"
   TESTNAME="__HIDE__" rperr "\"${C_LIST}%s${C_NORMAL}\".\n" \
     "${__GET_ARGTYPE_LIST}"
   rperr "${C_TITLE}Failed Command:${C_NORMAL}\n"
@@ -105,6 +106,49 @@ __GET_ARGTYPE_ARG_TYPE="$(__get_argtype_cmd)" || {
 
 [ "${__GET_ARGTYPE_ARG_TYPE}" != "${__GET_ARGTYPE_REQARG}" ] && {
   __get_argtype_err_on_argtype
+  exit 1
+}
+
+printf "%s: ${C_TITLE}%s:${C_NORMAL} ${C_SUCCESS}SUCCESS${C_NORMAL}.\n" \
+  "${TESTNAME}" "${__GET_ARGTYPE_TESTNAME}"
+
+#
+# Short Options Failure Tests
+#
+__GET_ARGTYPE_TESTNAME="Short Options Failure Tests"
+#
+# The following tests are supposed to fail.
+#
+# Test against a comma separated list of strings without ':'.
+#
+# The expected result is:
+#
+# 1) The "__GET_ARGTYPE_ARG_TYPE" is not set;
+#
+__GET_ARGTYPE_TARGET="a:"
+__GET_ARGTYPE_LIST="a,b,c"
+__get_argtype_cmd() { __get_argtype "${__GET_ARGTYPE_TARGET}" "${__GET_ARGTYPE_LIST}"; }
+__GET_ARGTYPE_CMD="$(printf "__get_argtype \"%s\" \"%s\"" \
+  "${__GET_ARGTYPE_TARGET}" "${__GET_ARGTYPE_LIST}")"
+__GET_ARGTYPE_ARG_TYPE="$(__get_argtype_cmd)" && {
+  __GET_ARGTYPE_NO_MATCH="not" __get_argtype_err_on_matching
+  exit 1
+}
+
+#
+# Test against a comma separated list of strings without ':'.
+#
+# The expected result is:
+#
+# 1) The "__GET_ARGTYPE_ARG_TYPE" is not set;
+#
+__GET_ARGTYPE_TARGET="a:"
+__GET_ARGTYPE_LIST="a:,b,c"
+__get_argtype_cmd() { __get_argtype "${__GET_ARGTYPE_TARGET}" "${__GET_ARGTYPE_LIST}"; }
+__GET_ARGTYPE_CMD="$(printf "__get_argtype \"%s\" \"%s\"" \
+  "${__GET_ARGTYPE_TARGET}" "${__GET_ARGTYPE_LIST}")"
+__GET_ARGTYPE_ARG_TYPE="$(__get_argtype_cmd)" && {
+  __GET_ARGTYPE_NO_MATCH="not" __get_argtype_err_on_matching
   exit 1
 }
 

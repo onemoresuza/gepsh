@@ -1,6 +1,6 @@
 #!/bin/sh
 
-__is_in() {
+__get_argtype() {
   #
   # Checks whether or not ${1} is in the comma separated list of strings of ${2}.
   #
@@ -8,10 +8,10 @@ __is_in() {
   # exhausted, the function returns 1.
   #
 
-  __is_in_target="${1}"
-  __is_in_list="${2}"
-  __is_in_elem=""
-  while [ -n "${__is_in_list}" ]; do
+  __get_argtype_target="${1}"
+  __get_argtype_list="${2}"
+  __get_argtype_elem=""
+  while [ -n "${__get_argtype_list}" ]; do
     #
     # The string deletions below are as follows:
     #
@@ -25,9 +25,9 @@ __is_in() {
     # deleted and the loop to never finish. By separating the deletion of the
     # ',', the last item can be deleted.
     #
-    __is_in_elem="${__is_in_list%%,*}"
-    __is_in_list="${__is_in_list#"${__is_in_elem}"}"
-    __is_in_list="${__is_in_list#,}"
+    __get_argtype_elem="${__get_argtype_list%%,*}"
+    __get_argtype_list="${__get_argtype_list#"${__get_argtype_elem}"}"
+    __get_argtype_list="${__get_argtype_list#,}"
 
     #
     # Comparison with The Target
@@ -35,9 +35,9 @@ __is_in() {
     # Since the passed options do not contain a ':' at the end, it must be
     # removed from the current element.
     #
-    case "${__is_in_elem%:}" in
-      "${__is_in_target}")
-        [ -z "${__is_in_elem#*:}" ] && printf "reqarg" || printf "noarg"
+    case "${__get_argtype_elem%:}" in
+      "${__get_argtype_target}")
+        [ -z "${__get_argtype_elem#*:}" ] && printf "reqarg" || printf "noarg"
         return 0
         ;;
     esac

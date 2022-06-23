@@ -8,6 +8,7 @@
 export C_TITLE="\033[1m\033[3m"
 export C_CMD="\033[1m"
 export C_FAIL="\033[38;5;160m"
+export C_SUCCESS="\033[38;5;70m"
 export C_TARGET="\033[38;5;226m"
 export C_LIST="\033[38;5;26m"
 export C_NORMAL="\033[m"

@@ -32,12 +32,15 @@ __is_in() {
     #
     # Comparison with The Target
     #
-    # Even though "${__is_in_elem}" may contain trailing spaces and a ':'
-    # appended to the option, no more string deletion is needed: by inverting
-    # what would be intuitive comparison --- target against the element ---,
-    # the desired result is achieved.
+    # Since the passed options do not contain a ':' at the end, it must be
+    # removed from the current element.
     #
-    case "${__is_in_elem}" in *"${__is_in_target}"*) return 0;; esac
+    case "${__is_in_elem%:}" in
+      "${__is_in_target}")
+        [ -z "${__is_in_elem#*:}" ] && printf "reqarg" || printf "noarg"
+        return 0
+        ;;
+    esac
   done
 
   return 1
@@ -58,9 +61,9 @@ gepsh() {
   # length, for example, "a-long,b-long:,c-long:".
   #
   # Realize that for an option to be correctly parsed, both options must
-  # indicate if it takes or not an argument. Moreover, spaces among them are
-  # ignored, hence, "a-long, b-long: , c-long:" and "a,  b:   , c:" are all
-  # valid.
+  # indicate if it takes or not an argument. Moreover, spaces between the
+  # options are not supported, hence, "a,b:,c" and "a-long,b-long:,c-long" are
+  # valid, while "a , b:, c" and " a-long , b-long: , c-long" are not.
   # 
   # If the program contains no short or long options, a comma should be passed
   # in their place:

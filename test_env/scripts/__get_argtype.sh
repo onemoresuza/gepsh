@@ -12,7 +12,7 @@ oneTimeSetUp() {
   BO="\033[1m"
   IT="\033[3m"
   NO="\033[m"
-  . ./gepsh
+  . "${LIB_TO_SOURCE}"
 }
 
 oneTimeTearDown() {

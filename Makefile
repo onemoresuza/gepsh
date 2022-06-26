@@ -1,5 +1,5 @@
 SHELL := /bin/sh
-LIB_FILE := gepsh
+LIB_FILE := src/gepsh.sh
 TEST_ENV := test_env
 TEST_ENV_SCRIPT_DIR := $(TEST_ENV)/scripts
 
@@ -27,7 +27,7 @@ all:
 test: test_get_argtype test_lopt_parse
 
 test_get_argtype:
-	$(SHELL) $(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh
+	LIB_TO_SOURCE=$(LIB_FILE) $(SHELL) $(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh
 
 test_lopt_parse:
-	$(SHELL) $(TEST_ENV_SCRIPT_DIR)/__lopt_parse.sh
+	LIB_TO_SOURCE=$(LIB_FILE) $(SHELL) $(TEST_ENV_SCRIPT_DIR)/__lopt_parse.sh

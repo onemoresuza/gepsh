@@ -2,8 +2,9 @@ SHELL := /bin/sh
 LIB_FILE := gepsh
 TEST_ENV := test_env
 TEST_ENV_SCRIPT_DIR := $(TEST_ENV)/scripts
+
 #
-# Test Formating Variables
+# Formating Variables
 #
 BO := \033[1m
 NO := \033[m

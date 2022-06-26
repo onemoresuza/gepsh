@@ -1,5 +1,8 @@
 #!/bin/sh
 
+__GEPSH_REQARG="reqarg"
+__GEPSH_NOARG="noarg"
+
 __get_argtype() {
   #
   # Checks whether or not ${1} is in the comma separated list of strings of
@@ -43,7 +46,9 @@ __get_argtype() {
     #
     case "${__get_argtype_elem%:}" in
       "${__get_argtype_target}")
-        [ -z "${__get_argtype_elem#*:}" ] && printf "reqarg" || printf "noarg"
+        [ -z "${__get_argtype_elem#*:}" ] \
+            && printf "%s" "${__GEPSH_REQARG}" \
+            || printf "%s" "${__GEPSH_NOARG}"
         return 0
         ;;
     esac

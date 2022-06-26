@@ -47,8 +47,8 @@ __get_argtype() {
     case "${__get_argtype_elem%:}" in
       "${__get_argtype_target}")
         [ -z "${__get_argtype_elem#*:}" ] \
-            && printf "%s" "${__GEPSH_REQARG}" \
-            || printf "%s" "${__GEPSH_NOARG}"
+          && printf "%s" "${__GEPSH_REQARG}" \
+          || printf "%s" "${__GEPSH_NOARG}"
         return 0
         ;;
     esac
@@ -103,7 +103,7 @@ __lopt_parse() {
     "${__GEPSH_NOARG}")
       #
       # An option that requires no argument was passed in the key=value format,
-      # which is only for options that require arguments. 
+      # which is only for options that require arguments.
       #
       # This comparison works as follows: `${__lopt_parse_opt}` is stripped of
       # the double-dashes and of the `=value` part, if there's one;
@@ -121,7 +121,7 @@ __lopt_parse() {
       }
       printf "0:\"--%s\"" "${__lopt_parse_opt}"
       ;;
-    "${__GEPSH_REQARG}");;
+    "${__GEPSH_REQARG}") ;;
   esac
 
   return 0
@@ -145,7 +145,7 @@ gepsh() {
   # indicate if it takes or not an argument. Moreover, spaces between the
   # options are not supported, hence, "a,b:,c" and "a-long,b-long:,c-long" are
   # valid, while "a , b:, c" and " a-long , b-long: , c-long" are not.
-  # 
+  #
   # If the program contains no short or long options, a comma should be passed
   # in their place:
   #
@@ -205,7 +205,7 @@ gepsh() {
       # options --- e. g., "-abc" --- or both --- e. g., "-abcArgOfC" ---
       # conjoined to itself.
       #
-      -[!-]*);;
+      -[!-]*) ;;
       #
       # Positional Arguments
       #
@@ -220,12 +220,12 @@ gepsh() {
       #
       # 1) Optional arguments and its positional arguments:
       # `"-a" "-b" "-c" "--d-long" "ArgOfD"`
-      # 
+      #
       # 2) Positional arguments:
       # `"PosArg1" "-efg" "--h-long=ArgOfH"`
       #
       # To achieve this behavior, there must be a flag which is set when the
-      # first positional argument is found. 
+      # first positional argument is found.
       # Such a flag is `gepsh_treat_as_posargs`.
       #
       # Its use on the `WORD` argument of the case statement has the following

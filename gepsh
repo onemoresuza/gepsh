@@ -78,11 +78,17 @@ __lopt_parse() {
   __lopt_parse_arg="${1#*=}"
   __lopt_parse_list="${2}"
   shift 2
+  #
+  # Fail on long options of length 1.
+  #
   [ "${#__lopt_parse_opt}" -eq 1 ] && {
     printf "Long options must be of at least two characters length.\n" 1>&2
     return 1
   }
 
+  #
+  # Fail on invalid (not found) options.
+  #
   __lopt_parse_argtype="$(
     __get_argtype "${__lopt_parse_opt}" "${__lopt_parse_list}"
   )" || {

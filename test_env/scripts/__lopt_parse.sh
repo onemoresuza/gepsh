@@ -32,6 +32,14 @@ testLoptValidity() {
   assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
     "test $(__lopt_parse "${lopt}" "${lopt_list}" "${args}" 2>/dev/null)"
 
+  lopt="--y-long"
+  lopt_list="a-long,b-long,c-long"
+  args=""
+  test_title="Test the validity of a long option not in the option list"
+  test_cmd="\$ __lopt_parse \"${lopt}\" \"${lopt_list}\" \"${args}\""
+  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
+    "test $(__lopt_parse "${lopt}" "${lopt_list}" "${args}" 2>/dev/null)"
+
   return 0
 }
 

@@ -69,10 +69,20 @@ __lopt_parse() {
   # valid long options; and "arguments", the yet to be parsed arguments.
   #
   __lopt_parse_opt="${1#--}"
+  __lopt_parse_list="${2}"
+  shift 2
   [ "${#__lopt_parse_opt}" -eq 1 ] && {
     printf "Long options must be of at least two characters length.\n" 1>&2
     return 1
   }
+
+  __lopt_parse_argtype="$(
+    __get_argtype "${__lopt_parse_opt}" "${__lopt_parse_list}"
+  )" || {
+    printf "Invalid long option -- \"--%s\".\n" "${__lopt_parse_opt}" 1>&2
+    return 1
+  }
+
 
   return 0
 }

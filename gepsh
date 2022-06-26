@@ -2,7 +2,13 @@
 
 __get_argtype() {
   #
-  # Checks whether or not ${1} is in the comma separated list of strings of ${2}.
+  # Checks whether or not ${1} is in the comma separated list of strings of
+  # ${2}:
+  #
+  # __get_argtype "option-stripped-of-dashes" "option-list"
+  #
+  # The the first argument must comme stripped of dashes, because these function
+  # doesn't know if it's checking against a short or long option.
   #
   # If the loop is broken, a match was found and the function returns 0; if
   # exhausted, the function returns 1.

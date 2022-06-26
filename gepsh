@@ -46,6 +46,29 @@ __get_argtype() {
   return 1
 }
 
+__lopt_parse() {
+  #
+  # This function parses long options, that is, it prints to its stdout, when
+  # the option is valid, the escaped option, its argument, if there is one, and
+  # the number of arguments to be shifted. Because of the second item, the
+  # output of this function is:
+  #
+  # n:"lopt" ["posarg"]
+  #
+  # It takes three arguments:
+  #
+  # __lopt_parse "lopt" "lopt_list" "arguments"
+  #
+  # in which, `lopt` is the long option to be analyzed; `lopt_list`, the list of
+  # valid long options; and "arguments", the yet to be parsed arguments.
+  #
+  __lopt_parse_opt="${1#--}"
+  [ "${#__lopt_parse_opt}" -eq 1 ] && {
+    printf "Long options must be of at least two characters length.\n" 1>&2
+    return 1
+  }
+}
+
 gepsh() {
   #
   # This function takes three arguments:
@@ -78,7 +101,7 @@ gepsh() {
   # treated like positional arguments.
   #
   sopts="${1}"
-  lopts="${2}"
+  gepsh_lopts="${2}"
   shift 2
   gepsh_treat_as_posargs=""
 
@@ -90,7 +113,7 @@ gepsh() {
   gepsh_stdout=""
 
   while [ "${#}" -gt 0 ]; do
-    opt=""
+    gepsh_parsed=""
     #
     # For info on this parameter expansion, see `Positional Arguments` below.
     #
@@ -109,8 +132,10 @@ gepsh() {
         # '=' is removed: realize that, when the option is not passed in the
         # "key=value" format, such string deletion will do nothing.
         #
-        opt="${1#--}"
-        opt="${opt%%=*}"
+        gepsh_parsed="$(__lopt_parse "${1}" "${gepsh_lopts}" "${@}" 2>&1)" || {
+          printf "gepsh: %s\n" "${gepsh_parsed}" 1>&2
+          return 1
+        }
         ;;
       #
       # Short Options
@@ -168,5 +193,15 @@ gepsh() {
     esac
     shift
   done
+  #
+  # In the case that no positional arguments were passed ---
+  # `[ -z "${gepsh_treat_as_posargs}" ]` equals true --- a "--" must be appended
+  # now, or else the scripts using this library would not be able to break the
+  # loop
+  #
+  [ -z "${gepsh_treat_as_posargs}" ] && {
+    printf "%s \"--\"\n" "${gepsh_stdout}"
+    return 0
+  }
   printf "%s\n" "${gepsh_stdout}"
 }

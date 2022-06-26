@@ -118,7 +118,7 @@ gepsh() {
   # the first positional argument reached will make all of those after it to be
   # treated like positional arguments.
   #
-  sopts="${1}"
+  #sopts="${1}"
   gepsh_lopts="${2}"
   shift 2
   gepsh_treat_as_posargs=""

@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#
+# Shfmt command:
+#
+# $ shfmt -i 2 -bn -ci <filename>
+#
+
 __GEPSH_REQARG="reqarg"
 __GEPSH_NOARG="noarg"
 

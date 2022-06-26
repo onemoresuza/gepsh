@@ -2,10 +2,26 @@ SHELL := /bin/sh
 LIB_FILE := gepsh
 TEST_ENV := test_env
 TEST_ENV_SCRIPT_DIR := $(TEST_ENV)/scripts
+#
+# Test Formating Variables
+#
+BO := \033[1m
+NO := \033[m
 
-.PHONY: all install uninstall
+.PHONY: all install uninstall test test_arg_type
 
 all:
-	@echo "Available Targets Are as Follows:\n"
-	@echo "install: install the library (yet to be implemented)."
-	@echo "uninstall: uninstall the library (yet to be implemented)."
+	@printf "Available Targets Are as Follows:\n\n"
+	@printf "$(BO)install$(NO):\t"
+	@printf "install the library (yet to be implemented).\n"
+	@printf "$(BO)uninstall$(NO):\t"
+	@printf "uninstall the library (yet to be implemented).\n"
+	@printf "$(BO)test$(NO):\t\t"
+	@printf "execute all test scripts in \"$(TEST_ENV_SCRIPT_DIR)\".\n"
+	@printf "$(BO)test_arg_type$(NO):\t"
+	@printf "execute \"$(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh\".\n"
+
+test: test_arg_type
+
+test_arg_type:
+	$(SHELL) $(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh

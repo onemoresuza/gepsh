@@ -29,16 +29,16 @@ testLoptValidity() {
   args=""
   test_title="Test the validity of a long option of length 1"
   test_cmd="\$ __lopt_parse \"${lopt}\" \"${lopt_list}\" \"${args}\""
-  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__lopt_parse "${lopt}" "${lopt_list}" "${args}" 2>/dev/null)"
+  __lopt_parse "${lopt}" "${lopt_list}" "${args}" 1>/dev/null 2>&1
+  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" "${?}"
 
   lopt="--y-long"
   lopt_list="a-long,b-long,c-long"
   args=""
   test_title="Test the validity of a long option not in the option list"
   test_cmd="\$ __lopt_parse \"${lopt}\" \"${lopt_list}\" \"${args}\""
-  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__lopt_parse "${lopt}" "${lopt_list}" "${args}" 2>/dev/null)"
+  __lopt_parse "${lopt}" "${lopt_list}" "${args}" 1>/dev/null 2>&1
+  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" "${?}"
 
   lopt="--a-long=ArgOfA"
   lopt_list="a-long:,b-long,c-long"
@@ -46,8 +46,7 @@ testLoptValidity() {
   test_title="Test the validity of a long option in the key=value format"
   test_cmd="\$ __lopt_parse \"${lopt}\" \"${lopt_list}\" \"${args}\""
   __lopt_parse "${lopt}" "${lopt_list}" "${args}" 1>/dev/null 2>&1
-  assertEquals " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" \
-    "${SHUNIT_TRUE}" "${?}"
+  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" "${?}"
 
   return 0
 }

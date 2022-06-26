@@ -28,29 +28,29 @@ testMatching() {
   str_list="a,b,c"
   test_title="Matching test on argless short option:"
   test_cmd="\$ __get_argtype \"${str}\" \"${str_list}\""
-  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__get_argtype "${str}" "${str_list}")"
+  __get_argtype "${str}" "${str_list}" 1>/dev/null 2>&1
+  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" "${?}"
 
   str="a"
   str_list="a:,b,c"
   test_title="Matching test on short option with argument:"
   test_cmd="\$ __get_argtype \"${str}\" \"${str_list}\""
-  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__get_argtype "${str}" "${str_list}")"
+  __get_argtype "${str}" "${str_list}" 1>/dev/null 2>&1
+  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" "${?}"
 
   str="a-long"
   str_list="a-long,b-long,c-long"
   test_title="Matching test on argless long option:"
   test_cmd="\$ __get_argtype \"${str}\" \"${str_list}\""
-  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__get_argtype "${str}" "${str_list}")"
+  __get_argtype "${str}" "${str_list}" 1>/dev/null 2>&1
+  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" "${?}"
 
   str="a-long"
   str_list="a-long:,b-long,c-long"
   test_title="Matching test on long option with argument:"
   test_cmd="\$ __get_argtype \"${str}\" \"${str_list}\""
-  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" \
-    "test $(__get_argtype "${str}" "${str_list}")"
+  __get_argtype "${str}" "${str_list}" 1>/dev/null 2>&1
+  assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}" "${?}"
 
   return 0
 }

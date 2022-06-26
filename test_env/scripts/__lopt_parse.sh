@@ -48,6 +48,15 @@ testLoptValidity() {
   __lopt_parse "${lopt}" "${lopt_list}" "${args}" 1>/dev/null 2>&1
   assertTrue " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" "${?}"
 
+  lopt="--a-long=ArgOfA"
+  lopt_list="a-long,b-long,c-long"
+  args=""
+  test_title="Test the validity of an argless long"
+  test_title="${test_title} option in the key=value format"
+  test_cmd="\$ __lopt_parse \"${lopt}\" \"${lopt_list}\" \"${args}\""
+  __lopt_parse "${lopt}" "${lopt_list}" "${args}" 1>/dev/null 2>&1
+  assertFalse " ${IT}${test_title}${NO}\n\t${BO}${test_cmd}${NO}\n\t" "${?}"
+
   return 0
 }
 

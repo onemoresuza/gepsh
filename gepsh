@@ -96,6 +96,34 @@ __lopt_parse() {
     return 1
   }
 
+  #
+  # Case statements for each argument type.
+  #
+  case "${__lopt_parse_argtype}" in
+    "${__GEPSH_NOARG}")
+      #
+      # An option that requires no argument was passed in the key=value format,
+      # which is only for options that require arguments. 
+      #
+      # This comparison works as follows: `${__lopt_parse_opt}` is stripped of
+      # the double-dashes and of the `=value` part, if there's one;
+      # `${__lopt_parse_arg}` is only `value`. Thus, when an argless option is
+      # passed in the `key=value` format, these two variables will differ, since
+      # the "${1%%=*}" string deletion will have caused a change.
+      #
+      # Remeber that, in any case, the former will lack the double dashes, and
+      # so, they need to prefix it.
+      #
+      [ "--${__lopt_parse_opt}" != "${__lopt_parse_arg}" ] && {
+        printf "Argless option with argument -- \"--%s=%s\".\n" \
+          "${__lopt_parse_opt}" "${__lopt_parse_arg}"
+        return 1
+      }
+      printf "0:\"--%s\"" "${__lopt_parse_opt}"
+      ;;
+    "${__GEPSH_REQARG}");;
+  esac
+
   return 0
 }
 

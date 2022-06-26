@@ -67,6 +67,8 @@ __lopt_parse() {
     printf "Long options must be of at least two characters length.\n" 1>&2
     return 1
   }
+
+  return 0
 }
 
 gepsh() {

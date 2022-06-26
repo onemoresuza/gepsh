@@ -20,8 +20,13 @@ all:
 	@printf "execute all test scripts in \"$(TEST_ENV_SCRIPT_DIR)\".\n"
 	@printf "$(BO)test_arg_type$(NO):\t"
 	@printf "execute \"$(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh\".\n"
+	@printf "$(BO)test_lopt_parse$(NO):\t"
+	@printf "execute \"$(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh\".\n"
 
-test: test_arg_type
+test: test_arg_type test_lopt_parse
 
 test_arg_type:
 	$(SHELL) $(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh
+
+test_lopt_parse:
+	$(SHELL) $(TEST_ENV_SCRIPT_DIR)/__lopt_parse.sh

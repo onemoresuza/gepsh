@@ -81,13 +81,14 @@ gepsh() {
   sopts="${1}"
   lopts="${2}"
   shift 2
+  gepsh_treat_as_posargs=""
 
-  #
-  # Iterate over every argument in "${@}"
-  #
   while [ "${#}" -gt 0 ]; do
     opt=""
-    case "${1}" in
+    #
+    # For info on this parameter expansion, see `Positional Arguments` below.
+    #
+    case "${gepsh_treat_as_posargs:-"${1}"}" in
       #
       # Long Options
       #
@@ -116,6 +117,38 @@ gepsh() {
       # conjoined to itself.
       #
       -[!-]*);;
+      #
+      # Positional Arguments
+      #
+      # Since this parser follows, partialy, the behavior of `GNU getopt` when
+      # the `POSIXLY_CORRECT` variable is set, at the first positional argument,
+      # all of the remaining ones, whatever they are, shall be considered also
+      # positional arguments. Thus, the arguments:
+      #
+      # `-abc --d-long ArgOfD PosArg1 -efg --h-long=ArgOfH`
+      #
+      # would be divided in:
+      #
+      # 1) Optional arguments and its positional arguments:
+      # `"-a" "-b" "-c" "--d-long" "ArgOfD"`
+      # 
+      # 2) Positional arguments:
+      # `"PosArg1" "-efg" "--h-long=ArgOfH"`
+      #
+      # To achieve this behavior, there must be a flag which is set when the
+      # first positional argument is found. 
+      # Such a flag is `gepsh_treat_as_posargs`.
+      #
+      # Its use on the `WORD` argument of the case statement has the following
+      # rationale: all that is not a long option (`--?*`) or a short option
+      # (`-[!-]*`) is a positional argument, in consequence, the value `1` ---
+      # `gepsh_treat_as_posargs` value when set --- will always be treated as an
+      # positional argument.
+      #
+      # Realize that this matching does not alter the value of `${1}`, only the
+      # `WORD` argument of the case statement.
+      #
+      *) gepsh_treat_as_posargs="1";;
     esac
     shift
   done

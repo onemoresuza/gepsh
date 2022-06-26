@@ -9,12 +9,19 @@
 __GEPSH_REQARG="reqarg"
 __GEPSH_NOARG="noarg"
 
+#
+# Checks the argument type of a given option.
+# Globals:
+#   __GEPSH_REQARG
+#   __GEPSH_NOARG
+# Arguments:
+#   1: option without dashes, 2: option list.
+# Outputs:
+#   Writes, when successful, the argument type of the given option.
+# Returns:
+#   0 if the option was found, 1 if not.
+#
 __get_argtype() {
-  #
-  # Checks whether or not ${1} is in the comma separated list of strings of
-  # ${2}:
-  #
-  # __get_argtype "option-stripped-of-dashes" "option-list"
   #
   # The the first argument must comme stripped of dashes, because these function
   # doesn't know if it's checking against a short or long option.
@@ -63,22 +70,27 @@ __get_argtype() {
   return 1
 }
 
+#
+# Parse the given long option
+# Globals:
+#   __GEPSH_REQARG
+#   __GEPSH_NOARG
+# Arguments:
+#   1: long option, 2: option list, 3: current arguments.
+# Outputs:
+#   STDOUT:
+#     When successful, the number of argument to shift succeeded by a
+#     ':', the escaped long option and, when there's one, the latter's argument
+#     separated by a space (' ') and also escaped:
+#
+#       n:"--long-option" "long option argument"
+#
+#   STDERR:
+#     An error message explaining the invalidity of the given option.
+# Returns:
+#   0 if the option was valid, 1 if not.
+#
 __lopt_parse() {
-  #
-  # This function parses long options, that is, it prints to its stdout, when
-  # the option is valid, the escaped option, its argument, if there is one, and
-  # the number of arguments to be shifted. Because of the second item, the
-  # output of this function is:
-  #
-  # n:"lopt" ["posarg"]
-  #
-  # It takes three arguments:
-  #
-  # __lopt_parse "lopt" "lopt_list" "arguments"
-  #
-  # in which, `lopt` is the long option to be analyzed; `lopt_list`, the list of
-  # valid long options; and "arguments", the yet to be parsed arguments.
-  #
   __lopt_parse_opt="${1#--}"
   __lopt_parse_opt="${__lopt_parse_opt%%=*}"
   __lopt_parse_arg="${1#*=}"
@@ -133,6 +145,21 @@ __lopt_parse() {
   return 0
 }
 
+#
+# Parse the given arguments.
+# Globals:
+#   None
+# Arguments:
+#   1: short option list, 2: long option list, 3: arguments.
+# Outputs:
+#   STDOUT:
+#     When successful, the parsed arguments in a format for them to be given to
+#     `eval set -- <stdout>`.
+#   STDERR:
+#     An error, message explaining the invalidity of the option.
+# Returns:
+#   0 when all arguments are parsed, 1 if one is invalid.
+#
 gepsh() {
   #
   # This function takes three arguments:

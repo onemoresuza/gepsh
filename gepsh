@@ -82,6 +82,13 @@ gepsh() {
   shift 2
   gepsh_treat_as_posargs=""
 
+  #
+  # This function only prints one time to stdout: after the loop, when all
+  # options and arguments are correctly parsed. This is done to avoid mixing the
+  # captured error message with validated arguments.
+  #
+  gepsh_stdout=""
+
   while [ "${#}" -gt 0 ]; do
     opt=""
     #
@@ -147,8 +154,19 @@ gepsh() {
       # Realize that this matching does not alter the value of `${1}`, only the
       # `WORD` argument of the case statement.
       #
-      *) gepsh_treat_as_posargs="1";;
+      *)
+        #
+        # When a program is looping over the parsed options, the "--" indicates
+        # that, with it, the positional arguments begin.
+        #
+        [ -z "${gepsh_treat_as_posargs}" ] && {
+          gepsh_stdout="$(printf "%s \"%s\"" "${gepsh_stdout}" "--")"
+        }
+        gepsh_stdout="$(printf "%s \"%s\"" "${gepsh_stdout}" "${1}")"
+        gepsh_treat_as_posargs="1"
+        ;;
     esac
     shift
   done
+  printf "%s\n" "${gepsh_stdout}"
 }

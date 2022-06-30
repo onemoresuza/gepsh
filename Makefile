@@ -31,6 +31,7 @@ test: test_get_argtype test_lopt_parse test-fmt
 
 test-fmt:
 	grep '.\{81\}' $(LIB_FILE) 1>/dev/null 2>&1 && exit 1 || exit 0
+	shfmt -i 2 -bn -ci -d $(LIB_FILE)
 
 test_get_argtype:
 	LIB_TO_SOURCE=$(LIB_FILE) $(SHELL) $(TEST_ENV_SCRIPT_DIR)/__get_argtype.sh

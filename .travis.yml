@@ -11,7 +11,6 @@ before_script:
   - wget -c https://github.com/mvdan/sh/releases/download/v3.5.1/shfmt_v3.5.1_linux_amd64
   - sudo install -Dm0755 shfmt_v3.5.1_linux_amd64 /usr/local/bin/shfmt
   - export PATH="${PATH}:/usr/local/bin"
-  - shfmt --version
 
 addons:
   apt:

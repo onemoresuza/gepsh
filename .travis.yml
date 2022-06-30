@@ -15,4 +15,4 @@ addons:
     - name: shfmt
 script:
   - make test
-  - shfmt --version
+  - shfmt -i 2 -bn -ci -d src/gepsh.sh

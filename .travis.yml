@@ -13,6 +13,6 @@ addons:
       - shunit2
   snaps:
     - name: shfmt
-
 script:
   - make test
+  - shfmt --version

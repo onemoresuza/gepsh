@@ -30,7 +30,6 @@ all:
 test: test_get_argtype test_lopt_parse test-fmt
 
 test-fmt:
-	[ -z "$$(shfmt -i 2 -bn -ci -d $(LIB_FILE))" ] && exit 0 || exit 1 
 	grep '.\{81\}' $(LIB_FILE) 1>/dev/null 2>&1 && exit 1 || exit 0
 
 test_get_argtype:

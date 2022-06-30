@@ -3,7 +3,7 @@ language: bash
 # Either xenial or bionic are necessary for the Snap Add-on.
 #
 dist: xenial
-virt: lxd
+virt: vm
 os: linux
 arch: amd64
 
@@ -13,7 +13,6 @@ addons:
       - shunit2
   snaps:
     - name: shfmt
-      confinement: classic
 
 script:
   - make test

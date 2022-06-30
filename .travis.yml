@@ -1,5 +1,18 @@
 language: bash
-before_install:
-  - sudo apt-get install -y shunit2
+#
+# Either xenial or bionic are necessary for the Snap Add-on.
+#
+dist: xenial
+virt: lxd
+os: linux
+arch: amd64
+
+addons:
+  apt:
+    packages:
+      - shunit2
+  snaps:
+    - name: shfmt
+
 script:
   - make test

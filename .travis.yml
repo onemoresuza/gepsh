@@ -13,6 +13,7 @@ addons:
       - shunit2
   snaps:
     - name: shfmt
+      confinement: classic
 
 script:
   - make test

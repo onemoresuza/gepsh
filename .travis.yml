@@ -18,4 +18,5 @@ addons:
       - shunit2
 
 script:
+  - shfmt --version
   - make test

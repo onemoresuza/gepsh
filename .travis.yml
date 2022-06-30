@@ -1,7 +1,4 @@
 language: bash
-#
-# Either xenial or bionic are necessary for the Snap Add-on.
-#
 dist: xenial
 virt: lxt
 os: linux
